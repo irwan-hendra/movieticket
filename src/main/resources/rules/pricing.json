@@ -1,0 +1,151 @@
+{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {
+      "type": "inputNode",
+      "content": {
+        "schema": ""
+      },
+      "id": "de0c3af6-3b1e-4013-877c-fda5b1f7f369",
+      "name": "Input",
+      "position": {
+        "x": 20,
+        "y": 190
+      }
+    },
+    {
+      "type": "outputNode",
+      "content": {
+        "schema": ""
+      },
+      "id": "8e9270cd-3b64-42e8-89e5-4c0bc25c0e8f",
+      "name": "Output",
+      "position": {
+        "x": 965,
+        "y": 190
+      }
+    },
+    {
+      "type": "expressionNode",
+      "content": {
+        "expressions": [
+          {
+            "id": "cd9bfb32-da2b-4ddb-b33e-752eaf30d1b6",
+            "key": "childrenCount",
+            "value": "len(filter(customers, #.age < 11))"
+          },
+          {
+            "id": "49b963a9-06b5-4e69-9a7c-2df7124288b7",
+            "key": "childrenDiscountMultiplier",
+            "value": "$.childrenCount >= 3 ? 0.75 : 1.0"
+          },
+          {
+            "id": "bb39ce8c-9df7-4a04-943d-9c9d25675bbd",
+            "key": "seniorDiscountMultiplier",
+            "value": "0.7"
+          }
+        ],
+        "passThrough": true,
+        "inputField": null,
+        "outputPath": null,
+        "executionMode": "single"
+      },
+      "id": "01598d86-c82b-4bb0-95e7-4cbbc4ac5a30",
+      "name": "CalculateDiscounts",
+      "position": {
+        "x": 295,
+        "y": 190
+      }
+    },
+    {
+      "type": "decisionTableNode",
+      "content": {
+        "hitPolicy": "first",
+        "rules": [
+          {
+            "_id": "538d0654-7854-46fd-8fe7-bc087c3f5ea5",
+            "445d5c14-80cd-492e-8bf2-4024e62d9330": ">= 65",
+            "efb4d4eb-4d0e-4942-a49c-cafec625a491": "\"Senior\"",
+            "cac830d0-42c3-4c0b-ae07-18e1e293c014": "25",
+            "d7d7d382-f94b-4e27-bf1a-26e5e2e573f2": "25 * $nodes.CalculateDiscounts.seniorDiscountMultiplier"
+          },
+          {
+            "_id": "074ca496-bff6-4981-856b-05efdb6d10f6",
+            "445d5c14-80cd-492e-8bf2-4024e62d9330": "[18..65)",
+            "efb4d4eb-4d0e-4942-a49c-cafec625a491": "\"Adult\"",
+            "cac830d0-42c3-4c0b-ae07-18e1e293c014": "25",
+            "d7d7d382-f94b-4e27-bf1a-26e5e2e573f2": "25"
+          },
+          {
+            "_id": "9ae4cf27-ba10-4c16-9e04-ffc21ed90434",
+            "445d5c14-80cd-492e-8bf2-4024e62d9330": "[11..18)",
+            "efb4d4eb-4d0e-4942-a49c-cafec625a491": "\"Teen\"",
+            "cac830d0-42c3-4c0b-ae07-18e1e293c014": "12",
+            "d7d7d382-f94b-4e27-bf1a-26e5e2e573f2": "12"
+          },
+          {
+            "_id": "ffd180d7-6fff-4a77-bee1-fb40b6b24dd5",
+            "445d5c14-80cd-492e-8bf2-4024e62d9330": "< 11",
+            "efb4d4eb-4d0e-4942-a49c-cafec625a491": "\"Children\"",
+            "cac830d0-42c3-4c0b-ae07-18e1e293c014": "5",
+            "d7d7d382-f94b-4e27-bf1a-26e5e2e573f2": "5 *$nodes.CalculateDiscounts.childrenDiscountMultiplier"
+          }
+        ],
+        "inputs": [
+          {
+            "id": "445d5c14-80cd-492e-8bf2-4024e62d9330",
+            "name": "Age",
+            "field": "age"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "efb4d4eb-4d0e-4942-a49c-cafec625a491",
+            "name": "Ticket Type",
+            "field": "ticketType"
+          },
+          {
+            "id": "cac830d0-42c3-4c0b-ae07-18e1e293c014",
+            "name": "Base Price",
+            "field": "basePrice"
+          },
+          {
+            "id": "d7d7d382-f94b-4e27-bf1a-26e5e2e573f2",
+            "name": "Final Price",
+            "field": "finalPrice"
+          }
+        ],
+        "passThrough": true,
+        "inputField": "customers",
+        "outputPath": "customerTickets",
+        "executionMode": "loop"
+      },
+      "id": "d5dae04b-bee7-413e-85d5-c1890f31ebb5",
+      "name": "TicketPriceDecisionTable",
+      "position": {
+        "x": 590,
+        "y": 190
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "ae56de6f-02fe-4233-8db5-fc655cc466e4",
+      "sourceId": "de0c3af6-3b1e-4013-877c-fda5b1f7f369",
+      "type": "edge",
+      "targetId": "01598d86-c82b-4bb0-95e7-4cbbc4ac5a30"
+    },
+    {
+      "id": "c03a140c-79d0-419c-8bed-926182fdeb4e",
+      "sourceId": "01598d86-c82b-4bb0-95e7-4cbbc4ac5a30",
+      "type": "edge",
+      "targetId": "d5dae04b-bee7-413e-85d5-c1890f31ebb5"
+    },
+    {
+      "id": "caa85648-99ba-49c2-a409-a9c38710e1e4",
+      "sourceId": "d5dae04b-bee7-413e-85d5-c1890f31ebb5",
+      "type": "edge",
+      "targetId": "8e9270cd-3b64-42e8-89e5-4c0bc25c0e8f"
+    }
+  ]
+}

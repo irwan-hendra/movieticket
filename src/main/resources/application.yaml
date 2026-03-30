@@ -1,0 +1,42 @@
+spring:
+  mvc:
+    problemdetails:
+      enabled: true
+    apiversion:
+      use:
+        path-segment: 1
+      supported: "1.0"
+      version-required: true
+  application:
+    name: movieticket
+  threads:
+    virtual:
+      enabled: true
+      
+server:
+  port: 8080
+
+logging:
+  file:
+    name: logs/app.log
+  level:
+    root: INFO
+    com.sevnis.movieticket: INFO
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+  console:
+    enabled: false
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%X{transactionId}] %-5level %logger{36} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+gorules:
+  rules-path: rules/
+  pricing-rule: pricing.json

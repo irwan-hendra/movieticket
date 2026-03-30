@@ -1,0 +1,4 @@
+logging:
+  level:
+    com.sevnis.movieticket: DEBUG
+    io.gorules: DEBUG
