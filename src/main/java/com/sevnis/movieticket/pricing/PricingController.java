@@ -11,6 +11,7 @@ import com.sevnis.movieticket.pricing.responses.TransactionResponse;
 import com.sevnis.movieticket.pricing.service.PricingService;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,9 @@ public class PricingController {
             .totalCost(entry.getValue().stream()
                 .map(CustomerTicket::finalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add))
-            .build()).toList();
+            .build())
+        .sorted(Comparator.comparing(TicketSummary::ticketType))
+        .toList();
 
     return TransactionResponse.builder()
         .transactionId(transactionRequest.transactionId())
