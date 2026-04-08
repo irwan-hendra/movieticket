@@ -1,0 +1,15 @@
+name: Test the project
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: maven:3.9-eclipse-temurin-25-alpine
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Maven Tests
+        run: mvn test
