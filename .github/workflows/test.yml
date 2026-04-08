@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Maven Tests
-        run: mvn test
+        run: ./mvnw test
